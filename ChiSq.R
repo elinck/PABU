@@ -1,4 +1,4 @@
-#### chi-sq tests for significance of painted bunting specimen record densities
+#### chi-sq tests for significance of painted bunting specimen record densities ####
 
 setwd("~/Desktop/PABU")
 
@@ -8,7 +8,13 @@ wintering <- read.csv("PABU_wintering.csv")
 othermolt <- read.csv("other_molting.csv")
 otherwinter <- read.csv("wintering_other.csv")
 migration <- read.csv("pabu_spring.csv")
+migration_2 <- read.csv("pabu_april.csv") #testing varied seasonal assignments for spring migration
+migration_3 <- read.csv("pabu_aprilmay.csv")
+migration_4 <- read.csv("pabu_marchapril.csv")
 othermigration <- read.csv("other_spring.csv")
+othermigration_2 <- read.csv("other_april.csv")
+othermigration_3 <- read.csv("other_aprilmay.csv")
+othermigration_4 <- read.csv("other_marchapril.csv")
 alt <- read.csv("pabumolt.alt.csv")
 otheralt <- read.csv("otherspec.alt.csv")
 
@@ -19,7 +25,13 @@ colnames(wintering) <- c("mo","lat","long")
 colnames(othermolt) <- c("mo","lat","long")
 colnames(otherwinter) <- c("mo","lat","long")
 colnames(migration) <- c("mo","lat","long")
+colnames(migration_2) <- c("mo","lat","long")
+colnames(migration_3) <- c("mo","lat","long")
+colnames(migration_4) <- c("mo","lat","long")
 colnames(othermigration) <-c("mo","lat","long")
+colnames(othermigration_2) <-c("mo","lat","long")
+colnames(othermigration_3) <-c("mo","lat","long")
+colnames(othermigration_4) <-c("mo","lat","long")
 
 #subset seasonal data by region, altitude for subsequent tests
 NW_molt_PABU <- subset(molting, lat >= 21 & long <= -103)
@@ -32,10 +44,20 @@ NW_winter_PABU <- subset(wintering, lat >= 21 & long <= -103)
 NW_winter_other <- subset(otherwinter, lat >= 21 & long <= -103)
 S_winter_PABU <-subset(wintering, lat <= 21)
 S_winter_other <-subset(otherwinter, lat <= 21)
-NW_migrate_PABU <- subset(migration, lat >= 21 & long <= -103)
-NE_migrate_PABU <- subset(migration, lat >= 21 & long >= -103)
+NW_migrate_PABU_2 <- subset(migration_2, lat >= 21 & long <= -103)
+NE_migrate_PABU_2 <- subset(migration_2, lat >= 21 & long >= -103)
+NW_migrate_PABU_3 <- subset(migration_3, lat >= 21 & long <= -103)
+NE_migrate_PABU_3 <- subset(migration_3, lat >= 21 & long >= -103)
+NW_migrate_PABU_4 <- subset(migration_4, lat >= 21 & long <= -103)
+NE_migrate_PABU_4 <- subset(migration_4, lat >= 21 & long >= -103)
 NW_migrate_other <- subset(othermigration, lat >= 21 & long <= -103)
 NE_migrate_other <- subset(othermigration, lat >= 21 & long >= -103)
+NW_migrate_other_2 <- subset(othermigration_2, lat >= 21 & long <= -103)
+NE_migrate_other_2 <- subset(othermigration_2, lat >= 21 & long >= -103)
+NW_migrate_other_3 <- subset(othermigration_3, lat >= 21 & long <= -103)
+NE_migrate_other_3 <- subset(othermigration_3, lat >= 21 & long >= -103)
+NW_migrate_other_4 <- subset(othermigration_4, lat >= 21 & long <= -103)
+NE_migrate_other_4 <- subset(othermigration_4, lat >= 21 & long >= -103)
 buntings_high <-subset(alt, alt >= 500)
 buntings_low <-subset(alt, alt <= 500)
 other_high <- subset(otheralt, alt >= 500)
@@ -62,6 +84,7 @@ wintering2 = as.data.frame(rbind(buntings_winter,other_winter))
 chisq.test(wintering2)
 
 #do buntings migrate up the east or west coast?
+#original seasonal assingment
 i <- nrow(NW_migrate_PABU)
 j <- nrow(NE_migrate_PABU)
 k <- nrow(NW_migrate_other)
@@ -70,6 +93,36 @@ buntings_migrate <- c(i,j)
 other_migrate <- c(k,l)
 migrate = as.data.frame(rbind(buntings_migrate,other_migrate))
 chisq.test(migrate)
+
+#testing april alone
+q <- nrow(NW_migrate_PABU_2)
+r <- nrow(NE_migrate_PABU_2)
+s <- nrow(NW_migrate_other_2)
+t <- nrow(NE_migrate_other_2)
+buntings_migrate_2 <- c(q,r)
+other_migrate_2 <- c(s,t)
+migrate_2 = as.data.frame(rbind(buntings_migrate_2,other_migrate_2))
+chisq.test(migrate_2)
+
+#testing april + may
+u <- nrow(NW_migrate_PABU_3)
+v <- nrow(NE_migrate_PABU_3)
+w <- nrow(NW_migrate_other_3)
+x <- nrow(NE_migrate_other_3)
+buntings_migrate_3 <- c(u,v)
+other_migrate_3 <- c(w,x)
+migrate_3 = as.data.frame(rbind(buntings_migrate_3,other_migrate_3))
+chisq.test(migrate_3)
+
+#testing march + april
+y <- nrow(NW_migrate_PABU_4)
+z <- nrow(NE_migrate_PABU_4)
+a2 <- nrow(NW_migrate_other_4)
+b2 <- nrow(NE_migrate_other_4)
+buntings_migrate_4 <- c(y,z)
+other_migrate_4 <- c(a2,b2)
+migrate_4 = as.data.frame(rbind(buntings_migrate_4,other_migrate_4))
+chisq.test(migrate_4)
 
 #do buntings stick to the lowlands (<500m) more than other species?
 m <- nrow(buntings_high)
