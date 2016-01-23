@@ -4,9 +4,9 @@ setwd("~/Desktop/PABU")
 
 #read in data
 molting <- read.csv("PABU_molting.csv")
-wintering <- read.csv("PABU_wintering.csv")
+wintering <- read.csv("PABU_wintering_2.csv")
 othermolt <- read.csv("other_molting.csv")
-otherwinter <- read.csv("wintering_other.csv")
+otherwinter <- read.csv("wintering_other_2.csv")
 migration <- read.csv("pabu_spring.csv")
 migration_2 <- read.csv("pabu_april.csv") #testing varied seasonal assignments for spring migration
 migration_3 <- read.csv("pabu_aprilmay.csv")
@@ -44,6 +44,10 @@ NW_winter_PABU <- subset(wintering, lat >= 21 & long <= -103)
 NW_winter_other <- subset(otherwinter, lat >= 21 & long <= -103)
 S_winter_PABU <-subset(wintering, lat <= 21)
 S_winter_other <-subset(otherwinter, lat <= 21)
+S_winter_PABU_noyucatan <-subset(wintering, lat <= 21 & long <= -94)
+S_winter_other_noyucatan <-subset(otherwinter, lat <= 21 & long <= -94)
+NW_migrate_PABU <- subset(migration, lat >= 21 & long <= -103)
+NE_migrate_PABU <- subset(migration, lat >= 21 & long >= -103)
 NW_migrate_PABU_2 <- subset(migration_2, lat >= 21 & long <= -103)
 NE_migrate_PABU_2 <- subset(migration_2, lat >= 21 & long >= -103)
 NW_migrate_PABU_3 <- subset(migration_3, lat >= 21 & long <= -103)
@@ -58,10 +62,10 @@ NW_migrate_other_3 <- subset(othermigration_3, lat >= 21 & long <= -103)
 NE_migrate_other_3 <- subset(othermigration_3, lat >= 21 & long >= -103)
 NW_migrate_other_4 <- subset(othermigration_4, lat >= 21 & long <= -103)
 NE_migrate_other_4 <- subset(othermigration_4, lat >= 21 & long >= -103)
-buntings_high <-subset(alt, alt >= 500)
-buntings_low <-subset(alt, alt <= 500)
-other_high <- subset(otheralt, alt >= 500)
-other_low <- subset(otheralt, alt <= 500)
+buntings_high <-subset(alt, alt >= 200)
+buntings_low <-subset(alt, alt <= 200)
+other_high <- subset(otheralt, alt >= 200)
+other_low <- subset(otheralt, alt <= 200)
 
 #do buntings molt in NW or NE mexico?
 a <- nrow(NW_molt_PABU)
@@ -82,6 +86,18 @@ buntings_winter <- c(e,f)
 other_winter <- c(g,h)
 wintering2 = as.data.frame(rbind(buntings_winter,other_winter))
 chisq.test(wintering2)
+
+#are these conclusions affected if birds from the Yucatan (putative SE USA migrants) are excluded?
+
+c2 <-nrow(S_winter_PABU_noyucatan)
+d2 <-nrow(NW_winter_PABU)
+e2 <-nrow(S_winter_other_noyucatan)
+f2 <-nrow(NW_winter_other)
+buntings_winter_noyucatan <- c(c2,d2)
+other_winter_noyucatan <- c(e2,f2)
+wintering3 = as.data.frame(rbind(buntings_winter_noyucatan,other_winter_noyucatan))
+chisq.test(wintering3)
+
 
 #do buntings migrate up the east or west coast?
 #original seasonal assingment
@@ -124,7 +140,7 @@ other_migrate_4 <- c(a2,b2)
 migrate_4 = as.data.frame(rbind(buntings_migrate_4,other_migrate_4))
 chisq.test(migrate_4)
 
-#do buntings stick to the lowlands (<500m) more than other species?
+#do buntings stick to the lowlands (<200m) more than other species?
 m <- nrow(buntings_high)
 n <- nrow(buntings_low)
 o <- nrow(other_high)
